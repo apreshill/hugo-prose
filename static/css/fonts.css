@@ -76,6 +76,13 @@ h1 > .title,
   letter-spacing: .1em;
 }
 
+
+.article-list h1 {
+  font-family: "EB Garamond", serif;
+  font-weight: 400;
+  letter-spacing: .01em;
+}
+
 .author,
 .appendix h3 {
   font-family: "EB Garamond", serif;
