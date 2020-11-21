@@ -23,7 +23,8 @@ appendix:
     The images on this page are from Wikipedia entries [Stoicism](https://en.wikipedia.org/wiki/Stoicism)
     and [清明上河图](https://zh.wikipedia.org/wiki/%E6%B8%85%E6%98%8E%E4%B8%8A%E6%B2%B3%E5%9C%96). The
     CSS style for draft posts was borrowed from Fabian Tamp's
-    [paperesque](https://github.com/capnfabs/paperesque/) theme.
+    [paperesque](https://github.com/capnfabs/paperesque/) theme. [Wladimir Palant's tutorial](https://palant.info/2020/06/04/the-easier-way-to-use-lunr-search-with-hugo/)
+    helped a lot with our implementation of the client-side search.
 features: [+toc, +number_sections, +sidenotes, -citation]
 ---
 
@@ -53,8 +54,8 @@ This page introduces the features of this Hugo theme that you can fiddle with.
 
 ## Site configurations
 
-As a minimalist theme, its configurations are relatively simple. For now, you
-can configure the following elements.
+Below are the possible options that you may configure for a site based on this
+theme.
 
 ### Menus
 
@@ -141,6 +142,14 @@ info cards, and then a number of the latest posts and pages.
 
     The default is 6.
 
+-   The `mainSections` parameter can be used to select the sections of pages to
+    be included on the home page, e.g.,
+
+    ``` yaml
+    params:
+      mainSections: ["post", "news"]
+    ```
+
 [^3]: We recommend that you keep the title short so it can fit on one line.
 
 ### Footer
@@ -156,6 +165,58 @@ params:
 ### Comments
 
 Disqus, Utterances
+
+### Searching
+
+This theme supports searching out of the box based on
+[Fuse.js](https://fusejs.io). A few critical configurations:
+
+-   The site needs to generate a JSON index. This is done via a layout file
+    `index.json.json` in `layouts/_default/`, and the config in `config.yaml`:
+
+    ``` yaml
+    outputs:
+      home: [html, rss, json]
+    ```
+
+-   A menu item with the ID `menu-search` configured in `config.yaml`, e.g.,
+
+    ``` yaml
+    menu:
+      header:
+        - name: Search
+          url: "#"
+          identifier: menu-search
+    ```
+
+-   The version of Fuse can be configured via the parameter `fuseVersion` in
+    `config.yaml`, e.g.,
+
+    ``` yaml
+    params:
+      fuseVersion: 6.4.3
+    ```
+
+    If no `fuseVersion` is specified, the latest version of Fuse.js will be
+    used. You may also download a copy of Fuse.js to the `static/` folder of
+    your site and use this copy instead of loading it from CDN. To do that, you
+    may download Fuse.js to, say, `static/js/fuse.js` and modify the partial
+    template `layouts/partials/foot_custom.html`. Replace
+
+    ``` html
+    {{ with .Site.Params.fuseVersion }}
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@{{ . }}"></script>
+    {{ end }}
+    ```
+
+    with
+
+    ``` html
+    <script src="{{ relURL "/js/fuse.js" }}"></script>
+    ```
+
+    That way, you can also use search when viewing the site offline, because
+    Fuse.js is no longer loaded from CDN.
 
 ## Articles
 

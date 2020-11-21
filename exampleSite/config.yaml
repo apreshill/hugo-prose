@@ -11,9 +11,15 @@ paginate: 2
 permalinks:
   post: "/post/:year/:month/:day/:slug/"
 
+outputs:
+  home: [html, rss, json]
+
 # some menu items were added via the `menu` option in YAML in posts
 menu:
   header:
+    - name: Search
+      url: "#"
+      identifier: menu-search
     - name: Subscribe
       url: "index.xml"
   footer:
@@ -37,6 +43,7 @@ menu:
 
 params:
   homePosts: 6
+  mainSections: ["post", "work"]
   editLink: "https://github.com/yihui/hugo-prose/edit/master/exampleSite/content/"
   authorDelimiter: " / "
   pageFeatures: [+sidenotes]
